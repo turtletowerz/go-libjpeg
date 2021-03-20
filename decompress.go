@@ -399,9 +399,9 @@ func readRGBScanlines(dinfo *C.struct_jpeg_decompress_struct, pix []uint8, strid
 }
 
 // TODO: supports decoding into image.RGBA instead of Image.
-func decodeRGB(dinfo *C.struct_jpeg_decompress_struct) (dest *Image, err error) {
+func decodeRGB(dinfo *C.struct_jpeg_decompress_struct) (dest *RGB, err error) {
 	C.jpeg_calc_output_dimensions(dinfo)
-	dest = NewImage(image.Rect(0, 0, int(dinfo.output_width), int(dinfo.output_height)))
+	dest = NewRGB(image.Rect(0, 0, int(dinfo.output_width), int(dinfo.output_height)))
 
 	dinfo.out_color_space = C.JCS_RGB
 	err = readRGBScanlines(dinfo, dest.Pix, dest.Stride)
@@ -409,7 +409,7 @@ func decodeRGB(dinfo *C.struct_jpeg_decompress_struct) (dest *Image, err error) 
 }
 
 // DecodeIntoRGB reads a JPEG data stream from r and returns decoded image as an Image with RGB colors.
-func DecodeIntoRGB(r io.Reader, options *DecoderOptions) (dest *Image, err error) {
+func DecodeIntoRGB(r io.Reader, options *DecoderOptions) (dest *RGB, err error) {
 	dinfo := newDecompress(r)
 	if dinfo == nil {
 		return nil, errors.New("allocation failed")

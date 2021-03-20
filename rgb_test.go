@@ -6,11 +6,13 @@ import (
 	"testing"
 )
 
-func TestImageInterface(t *testing.T) {
-	rect := image.Rect(0, 0, 100, 100)
-	img := NewImage(rect)
+// TODO: add tests
 
-	if got := img.ColorModel(); got != ColorModel {
+func TestRGB(t *testing.T) {
+	rect := image.Rect(0, 0, 100, 100)
+	img := NewRGB(rect)
+
+	if got := img.ColorModel(); got != RGBModel {
 		t.Errorf("ColorModel() should return rgb.ColorModel, got: %v", got)
 	}
 
@@ -25,39 +27,42 @@ func TestImageInterface(t *testing.T) {
 
 	blank := color.RGBA{}
 	if got := img.At(-1, -1); got != blank {
-		t.Errorf("At(0, 0) should return %v, got: %v", blank, got)
+		t.Errorf("At(-1, -1) should return %v, got: %v", blank, got)
 	}
 }
 
 func TestConvertFromRGBA(t *testing.T) {
 	rgba := color.RGBA{0x11, 0x22, 0x33, 0xFF}
-	expect := RGB{0x11, 0x22, 0x33}
-	if got := ColorModel.Convert(rgba); got != expect {
+	expect := ColorRGB{0x11, 0x22, 0x33}
+	if got := RGBModel.Convert(rgba); got != expect {
 		t.Errorf("got: %v, expect: %v", got, expect)
 	}
 }
 
 func TestConvertFromRGB(t *testing.T) {
-	c := RGB{0x11, 0x22, 0x33}
-	if got := ColorModel.Convert(c); got != c {
+	c := ColorRGB{0x11, 0x22, 0x33}
+	if got := RGBModel.Convert(c); got != c {
 		t.Errorf("got: %v, expect: %v", got, c)
 	}
 }
 
 func TestColorRGBA(t *testing.T) {
-	c := RGB{0x11, 0x22, 0x33}
+	c := ColorRGB{0x11, 0x22, 0x33}
 	r, g, b, a := uint32(0x1111), uint32(0x2222), uint32(0x3333), uint32(0xFFFF)
 
 	gotR, gotG, gotB, gotA := c.RGBA()
 	if gotR != r {
 		t.Errorf("got R: %v, expect R: %v", gotR, r)
 	}
+
 	if gotG != g {
 		t.Errorf("got G: %v, expect G: %v", gotG, g)
 	}
+
 	if gotB != b {
 		t.Errorf("got B: %v, expect B: %v", gotB, b)
 	}
+
 	if gotA != a {
 		t.Errorf("got A: %v, expect A: %v", gotA, a)
 	}

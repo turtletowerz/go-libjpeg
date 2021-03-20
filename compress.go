@@ -239,7 +239,7 @@ func Encode(w io.Writer, src image.Image, options *EncoderOptions) (err error) {
 		err = encodeGray(cinfo, s, options)
 	case *image.RGBA:
 		err = encodeRGBA(cinfo, s, options)
-	case *Image:
+	case *RGB:
 		err = encodeRGB(cinfo, s, options)
 	default:
 		return errors.New("unsupported image type")
@@ -357,7 +357,7 @@ func encodeRGBA(cinfo *C.struct_jpeg_compress_struct, src *image.RGBA, p *Encode
 }
 
 // encode and rgb Image.
-func encodeRGB(cinfo *C.struct_jpeg_compress_struct, src *Image, p *EncoderOptions) (err error) {
+func encodeRGB(cinfo *C.struct_jpeg_compress_struct, src *RGB, p *EncoderOptions) (err error) {
 	// Set up compression parameters
 	w, h := src.Bounds().Dx(), src.Bounds().Dy()
 	cinfo.image_width = C.JDIMENSION(w)
