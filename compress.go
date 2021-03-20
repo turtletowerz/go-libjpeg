@@ -220,7 +220,7 @@ func writeMCUYCbCr(cinfo *C.struct_jpeg_compress_struct, y, cb, cr C.JSAMPROW, y
 }
 
 // Encode encodes src image and writes into w as JPEG format data.
-func Encode(w io.Writer, src image.Image, opt *EncoderOptions) (err error) {
+func Encode(w io.Writer, src image.Image, options *EncoderOptions) (err error) {
 	var cinfo *C.struct_jpeg_compress_struct
 	cinfo, err = newCompress(w)
 	if err != nil {
@@ -228,15 +228,19 @@ func Encode(w io.Writer, src image.Image, opt *EncoderOptions) (err error) {
 	}
 	defer destroyCompress(cinfo)
 
+	if options == nil {
+		options = &EncoderOptions{Quality: 75}
+	}
+
 	switch s := src.(type) {
 	case *image.YCbCr:
-		err = encodeYCbCr(cinfo, s, opt)
+		err = encodeYCbCr(cinfo, s, options)
 	case *image.Gray:
-		err = encodeGray(cinfo, s, opt)
+		err = encodeGray(cinfo, s, options)
 	case *image.RGBA:
-		err = encodeRGBA(cinfo, s, opt)
+		err = encodeRGBA(cinfo, s, options)
 	case *Image:
-		err = encodeRGB(cinfo, s, opt)
+		err = encodeRGB(cinfo, s, options)
 	default:
 		return errors.New("unsupported image type")
 	}

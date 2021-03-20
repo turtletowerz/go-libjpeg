@@ -251,6 +251,10 @@ func Decode(r io.Reader, options *DecoderOptions) (dest image.Image, err error) 
 	}
 	defer destroyDecompress(dinfo)
 
+	if options == nil {
+		options = &DecoderOptions{}
+	}
+
 	err = readHeader(dinfo)
 	if err != nil {
 		return nil, err
