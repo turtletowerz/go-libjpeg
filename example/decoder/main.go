@@ -1,12 +1,13 @@
 package main
 
+/*
 import (
 	"flag"
 	"image"
 	"log"
 	"os"
 
-	"github.com/pixiv/go-libjpeg/jpeg"
+	"github.com/turtletowerz/go-libjpeg/jpeg"
 )
 
 func main() {
@@ -39,3 +40,4 @@ func main() {
 		log.Println("unknown format")
 	}
 }
+*/
